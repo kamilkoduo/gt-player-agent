@@ -1,34 +1,9 @@
 package com.company;
 
-import javafx.util.Pair;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Random;
+import java.util.*;
 
 public class KamilAkhmetovTesting {
-
-    public static class PlayerImpl implements Player {
-        @Override
-        public void reset() {
-            System.out.println("reset");
-        }
-
-        @Override
-        public int move(int opponentLastMove, int xA, int xB, int xC) {
-            System.out.printf(
-                    "move: | opponent last move: %d | xA: %d | xB: %d | xC: %d \n",
-                    opponentLastMove, xA, xB, xC
-            );
-            return 0;
-        }
-    }
-
-    /**
-     * Random
-     */
-    public static class PlayerImplRAND extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplRAND extends KamilAkhmetovCode.PlayerImpl {
         @Override
         public void reset() {
             System.out.println("reset" + this.getClass().getSimpleName());
@@ -42,10 +17,7 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    /**
-     * Random except min
-     */
-    public static class PlayerImplRANDNOTMIN extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplRANDNOTMIN extends KamilAkhmetovCode.PlayerImpl {
         @Override
         public void reset() {
             System.out.println("reset" + this.getClass().getSimpleName());
@@ -66,7 +38,7 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplRANDNOT0 extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplRANDNOT0 extends KamilAkhmetovCode.PlayerImpl {
         @Override
         public void reset() {
             System.out.println("reset" + this.getClass().getSimpleName());
@@ -90,10 +62,10 @@ public class KamilAkhmetovTesting {
     /**
      * Cyclic forward
      */
-    public static class PlayerImplCF extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplCF extends KamilAkhmetovCode.PlayerImpl {
         int k;
 
-        PlayerImplCF() {
+        KamilAkhmetovPlayerImplCF() {
             reset();
         }
 
@@ -113,10 +85,10 @@ public class KamilAkhmetovTesting {
     /**
      * Cyclic backward
      */
-    public static class PlayerImplCB extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplCB extends KamilAkhmetovCode.PlayerImpl {
         int k = 0;
 
-        PlayerImplCB() {
+        KamilAkhmetovPlayerImplCB() {
             reset();
         }
 
@@ -136,10 +108,10 @@ public class KamilAkhmetovTesting {
     /**
      * Random init Cyclic forward
      */
-    public static class PlayerImplRANDCF extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplRANDCF extends KamilAkhmetovCode.PlayerImpl {
         int k;
 
-        PlayerImplRANDCF() {
+        KamilAkhmetovPlayerImplRANDCF() {
             reset();
         }
 
@@ -159,10 +131,10 @@ public class KamilAkhmetovTesting {
     /**
      * Random init Cyclic backward
      */
-    public static class PlayerImplRANDCB extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplRANDCB extends KamilAkhmetovCode.PlayerImpl {
         int k;
 
-        PlayerImplRANDCB() {
+        KamilAkhmetovPlayerImplRANDCB() {
             reset();
         }
 
@@ -179,7 +151,7 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplCOPY extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplCOPY extends KamilAkhmetovCode.PlayerImpl {
         @Override
         public void reset() {
             System.out.println("reset");
@@ -194,10 +166,10 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplCOPYNOT0 extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplCOPYNOT0 extends KamilAkhmetovCode.PlayerImpl {
         int lastMove;
 
-        PlayerImplCOPYNOT0() {
+        KamilAkhmetovPlayerImplCOPYNOT0() {
             reset();
         }
 
@@ -222,48 +194,13 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplANTICOPYNOTMIN extends PlayerImpl {
-        int lastMove;
 
-        PlayerImplANTICOPYNOTMIN() {
-            reset();
-        }
 
-        @Override
-        public void reset() {
-            System.out.println("reset");
-            lastMove = 0;
-        }
-
-        @Override
-        public int move(int opponentLastMove, int xA, int xB, int xC) {
-            if (opponentLastMove == 0) {
-                lastMove = 1 + new Random().nextInt(3);
-            } else {
-                int[] cells = {xA, xB, xC};
-
-                int min = Arrays.stream(cells).min().getAsInt();
-                lastMove = new Random().nextInt(3);
-                if (opponentLastMove == lastMove+1) {
-                    lastMove++;
-                    lastMove%=3;
-                }
-
-                if (cells[lastMove]==min){
-                    lastMove++;
-                    lastMove%=3;
-                }
-                lastMove++;
-            }
-            return lastMove;
-        }
-    }
-
-    public static class PlayerImplALLD extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplALLD extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int lastMove;
 
-        PlayerImplALLD() {
+        KamilAkhmetovPlayerImplALLD() {
             reset();
         }
 
@@ -290,11 +227,11 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplALLC1 extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplALLMID extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int last_move;
 
-        PlayerImplALLC1() {
+        KamilAkhmetovPlayerImplALLMID() {
             reset();
         }
 
@@ -320,20 +257,14 @@ public class KamilAkhmetovTesting {
             return last_move;
         }
 
-        /**
-         * ALLC - Always Cooperate
-         * Play randomly in the start
-         * <p>
-         * Take Max if we did not take Max previous round
-         * Take other otherwise
-         */
+
     }
 
-    public static class PlayerImplALLMIN extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplALLMIN extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int last_move;
 
-        PlayerImplALLMIN() {
+        KamilAkhmetovPlayerImplALLMIN() {
             reset();
         }
 
@@ -360,12 +291,12 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplALLC1C2 extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplALLMIDMIN extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int last_move;
         int state;
 
-        PlayerImplALLC1C2() {
+        KamilAkhmetovPlayerImplALLMIDMIN() {
             reset();
         }
 
@@ -400,12 +331,12 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplALLC1D0 extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplALLMIDMAX extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int last_move;
         int state;
 
-        PlayerImplALLC1D0() {
+        KamilAkhmetovPlayerImplALLMIDMAX() {
             reset();
         }
 
@@ -439,14 +370,14 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplTFT extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplTFT extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int last_move;
         int state;
         int cell;
         int last_max_cell;
 
-        PlayerImplTFT() {
+        KamilAkhmetovPlayerImplTFT() {
             reset();
         }
 
@@ -490,7 +421,7 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplKEEPER extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplKEEPER extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int last_move;
         int state;
@@ -498,7 +429,7 @@ public class KamilAkhmetovTesting {
         int last_max_cell;
         int offense;
 
-        PlayerImplKEEPER() {
+        KamilAkhmetovPlayerImplKEEPER() {
             reset();
         }
 
@@ -547,7 +478,7 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplPATKEEPER extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplPATKEEPER extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment;
         int last_move;
         int state;
@@ -555,7 +486,7 @@ public class KamilAkhmetovTesting {
         int last_max_cell;
         int offense;
 
-        PlayerImplPATKEEPER() {
+        KamilAkhmetovPlayerImplPATKEEPER() {
             reset();
         }
 
@@ -604,7 +535,7 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplFORTN extends PlayerImpl {
+    public static class KamilAkhmetovPlayerImplFORTN extends KamilAkhmetovCode.PlayerImpl {
         KamilAkhmetovCode.Environment environment = new KamilAkhmetovCode.Environment();
         int last_move;
         int N;
@@ -612,10 +543,10 @@ public class KamilAkhmetovTesting {
         int last_max_cell;
         int state;
 
-        PlayerImplFORTN() {
+        KamilAkhmetovPlayerImplFORTN() {
         }
 
-        PlayerImplFORTN(int n) {
+        KamilAkhmetovPlayerImplFORTN(int n) {
             N = n;
             reset();
         }
@@ -667,20 +598,20 @@ public class KamilAkhmetovTesting {
         }
     }
 
-    public static class PlayerImplFORT5 extends PlayerImplFORTN {
-        PlayerImplFORT5() {
+    public static class KamilAkhmetovPlayerImplFORT5 extends KamilAkhmetovPlayerImplFORTN {
+        KamilAkhmetovPlayerImplFORT5() {
             super(5);
         }
     }
 
-    public static class PlayerImplFORT9 extends PlayerImplFORTN {
-        PlayerImplFORT9() {
+    public static class KamilAkhmetovPlayerImplFORT9 extends KamilAkhmetovPlayerImplFORTN {
+        KamilAkhmetovPlayerImplFORT9() {
             super(9);
         }
     }
 
-    public static class PlayerImplFORT45 extends PlayerImplFORTN {
-        PlayerImplFORT45() {
+    public static class KamilAkhmetovPlayerImplFORT45 extends KamilAkhmetovPlayerImplFORTN {
+        KamilAkhmetovPlayerImplFORT45() {
             super(45);
         }
     }
@@ -745,12 +676,12 @@ public class KamilAkhmetovTesting {
         int winner() {
             System.out.println("\nTotal Scores:");
 
-            Pair<Integer, Double>[] places = new Pair[scores.length];
+            AbstractMap.SimpleEntry<Integer, Double>[] places = new AbstractMap.SimpleEntry[scores.length];
             for (int i = 0; i < places.length; i++) {
-                places[i] = new Pair<>(i, scores[i]);
+                places[i] = new AbstractMap.SimpleEntry<>(i, scores[i]);
             }
 
-            final Comparator<Pair<Integer, Double>> c = Collections.reverseOrder(Comparator.comparing(Pair::getValue));
+            final Comparator<AbstractMap.SimpleEntry<Integer, Double>> c = Collections.reverseOrder(Comparator.comparing(AbstractMap.SimpleEntry::getValue));
             Arrays.sort(places, c);
 
             for (int i = 0; i < places.length; i++) {
@@ -768,50 +699,58 @@ public class KamilAkhmetovTesting {
         System.out.println("Testing");
 
         Player[] players = {
-                new PlayerImplRAND(),
-                new PlayerImplRANDNOTMIN(),
-                new PlayerImplRANDNOT0(),
-                new PlayerImplCF(),
-                new PlayerImplCB(),
-                new PlayerImplRANDCF(),
-                new PlayerImplRANDCB(),
-                new PlayerImplCOPY(),
-                new PlayerImplCOPYNOT0(),
-                new PlayerImplALLD(),
-                new PlayerImplALLC1(),
-                new PlayerImplALLMIN(),
-                new PlayerImplALLC1C2(),
-                new PlayerImplALLC1D0(),
-                new PlayerImplTFT(),
-                new PlayerImplFORT5(),
-                new PlayerImplFORT9(),
-                new PlayerImplFORT45(),
-                new PlayerImplKEEPER(),
-                new PlayerImplPATKEEPER(),
-                new PlayerImplANTICOPYNOTMIN(),
+                new KamilAkhmetovCode(),
+                new KamilAkhmetovPlayerImplCF(),
+                new KamilAkhmetovPlayerImplCB(),
 
+                new KamilAkhmetovPlayerImplRAND(),
+                new KamilAkhmetovPlayerImplRANDNOTMIN(),
+                new KamilAkhmetovPlayerImplRANDNOT0(),
+                new KamilAkhmetovPlayerImplRANDCF(),
+                new KamilAkhmetovPlayerImplRANDCB(),
 
-                new PlayerImplRAND(),
-                new PlayerImplRANDNOTMIN(),
-                new PlayerImplRANDNOT0(),
-                new PlayerImplCF(),
-                new PlayerImplCB(),
-                new PlayerImplRANDCF(),
-                new PlayerImplRANDCB(),
-                new PlayerImplCOPY(),
-                new PlayerImplCOPYNOT0(),
-                new PlayerImplALLD(),
-                new PlayerImplALLC1(),
-                new PlayerImplALLMIN(),
-                new PlayerImplALLC1C2(),
-                new PlayerImplALLC1D0(),
-                new PlayerImplTFT(),
-                new PlayerImplFORT5(),
-                new PlayerImplFORT9(),
-                new PlayerImplFORT45(),
-                new PlayerImplKEEPER(),
-                new PlayerImplPATKEEPER(),
-                new PlayerImplANTICOPYNOTMIN(),
+                new KamilAkhmetovPlayerImplCOPY(),
+                new KamilAkhmetovPlayerImplCOPYNOT0(),
+                new KamilAkhmetovCode.KamilAkhmetovPlayerImplANTICOPYNOTMIN(),
+
+                new KamilAkhmetovPlayerImplALLD(),
+                new KamilAkhmetovPlayerImplALLMID(),
+                new KamilAkhmetovPlayerImplALLMIN(),
+                new KamilAkhmetovPlayerImplALLMIDMIN(),
+                new KamilAkhmetovPlayerImplALLMIDMAX(),
+
+                new KamilAkhmetovPlayerImplTFT(),
+                new KamilAkhmetovPlayerImplFORT5(),
+                new KamilAkhmetovPlayerImplFORT9(),
+                new KamilAkhmetovPlayerImplFORT45(),
+                new KamilAkhmetovPlayerImplKEEPER(),
+                new KamilAkhmetovPlayerImplPATKEEPER(),
+
+                new KamilAkhmetovPlayerImplCF(),
+                new KamilAkhmetovPlayerImplCB(),
+
+                new KamilAkhmetovPlayerImplRAND(),
+                new KamilAkhmetovPlayerImplRANDNOTMIN(),
+                new KamilAkhmetovPlayerImplRANDNOT0(),
+                new KamilAkhmetovPlayerImplRANDCF(),
+                new KamilAkhmetovPlayerImplRANDCB(),
+
+                new KamilAkhmetovPlayerImplCOPY(),
+                new KamilAkhmetovPlayerImplCOPYNOT0(),
+                new KamilAkhmetovCode.KamilAkhmetovPlayerImplANTICOPYNOTMIN(),
+
+                new KamilAkhmetovPlayerImplALLD(),
+                new KamilAkhmetovPlayerImplALLMID(),
+                new KamilAkhmetovPlayerImplALLMIN(),
+                new KamilAkhmetovPlayerImplALLMIDMIN(),
+                new KamilAkhmetovPlayerImplALLMIDMAX(),
+
+                new KamilAkhmetovPlayerImplTFT(),
+                new KamilAkhmetovPlayerImplFORT5(),
+                new KamilAkhmetovPlayerImplFORT9(),
+                new KamilAkhmetovPlayerImplFORT45(),
+                new KamilAkhmetovPlayerImplKEEPER(),
+                new KamilAkhmetovPlayerImplPATKEEPER(),
         };
 
 
@@ -820,7 +759,6 @@ public class KamilAkhmetovTesting {
         int winner = tournament.winner();
 
         System.out.println("The winner is " + players[winner].getClass().getSimpleName() + " !!!");
-
 
     }
 }

@@ -1,12 +1,84 @@
 package com.company;
 
-import javafx.util.Pair;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
-public class KamilAkhmetovCode {
+public class KamilAkhmetovCode implements Player {
+    Player player = new KamilAkhmetovPlayerImplANTICOPYNOTMIN();
+    @Override
+    public void reset() {
+       player.reset();
+    }
+
+    @Override
+    public int move(int opponentLastMove, int xA, int xB, int xC) {
+        return player.move(opponentLastMove, xA,xB,xC);
+    }
+
+    @Override
+    public String getEmail() {
+        return player.getEmail();
+    }
+
+    public static class PlayerImpl implements Player {
+        @Override
+        public void reset() {
+            System.out.println("reset");
+        }
+
+        @Override
+        public int move(int opponentLastMove, int xA, int xB, int xC) {
+            System.out.printf(
+                    "move: | opponent last move: %d | xA: %d | xB: %d | xC: %d \n",
+                    opponentLastMove, xA, xB, xC
+            );
+            return 0;
+        }
+
+        @Override
+        public String getEmail() {
+            return "k.ahmetov@innopolis.ru";
+        }
+
+    }
+
+    public static class KamilAkhmetovPlayerImplANTICOPYNOTMIN extends KamilAkhmetovCode.PlayerImpl {
+        int lastMove;
+
+        KamilAkhmetovPlayerImplANTICOPYNOTMIN() {
+            reset();
+        }
+
+        @Override
+        public void reset() {
+            System.out.println("reset");
+            lastMove = 0;
+        }
+
+        @Override
+        public int move(int opponentLastMove, int xA, int xB, int xC) {
+            if (opponentLastMove == 0) {
+                lastMove = 1 + new Random().nextInt(3);
+            } else {
+                int[] cells = {xA, xB, xC};
+
+                int min = Arrays.stream(cells).min().getAsInt();
+                lastMove = new Random().nextInt(3);
+                if (opponentLastMove == lastMove+1) {
+                    lastMove++;
+                    lastMove%=3;
+                }
+
+                if (cells[lastMove]==min){
+                    lastMove++;
+                    lastMove%=3;
+                }
+                lastMove++;
+            }
+            return lastMove;
+        }
+    }
+
     /**
      * Class to model the environment of the game: field cells with their X values
      * We model the growth and exhausting of vegetation
@@ -31,7 +103,7 @@ public class KamilAkhmetovCode {
         }
 
         int[] sortedCells(){
-            Pair<Integer, Integer>[] cellPairs = sortedCellPairs();
+            AbstractMap.SimpleEntry<Integer, Integer>[] cellPairs = sortedCellPairs();
             int[] cells = new int[cellPairs.length];
             for (int i =0;i<cells.length; i++){
                 cells[i] = cellPairs[i].getKey();
@@ -39,12 +111,12 @@ public class KamilAkhmetovCode {
             return cells;
         }
 
-        Pair<Integer, Integer>[] sortedCellPairs(){
-            Pair<Integer, Integer>[] cellPairs = new Pair[XCells.length];
+        AbstractMap.SimpleEntry<Integer, Integer>[] sortedCellPairs(){
+            AbstractMap.SimpleEntry<Integer, Integer>[] cellPairs = new AbstractMap.SimpleEntry[XCells.length];
             for (int i =0;i<cellPairs.length;i++){
-                cellPairs[i]= new Pair<>(i,XCells[i]);
+                cellPairs[i]= new AbstractMap.SimpleEntry<>(i,XCells[i]);
             }
-            final Comparator<Pair<Integer, Integer>> c = Collections.reverseOrder(Comparator.comparing(Pair::getValue));
+            final Comparator<AbstractMap.SimpleEntry<Integer, Integer>> c = Collections.reverseOrder(Comparator.comparing(AbstractMap.SimpleEntry::getValue));
             Arrays.sort(cellPairs, c);
             return cellPairs;
         }
